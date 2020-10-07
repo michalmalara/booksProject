@@ -1,6 +1,6 @@
 /venv/
 /.idea/
 /books/__pycache__/
-booksProject/__pycache__/
+/booksProject/__pycache__/
 
 *.sqlite3
