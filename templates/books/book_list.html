@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Lista książek
+{% endblock %}
+
+{% block body %}
+    <table border="1">
+        <thead>
+            <td>Tytuł</td>
+            <td>Autor</td>
+            <td>DAta publikacji</td>
+            <td>ISBN</td>
+            <td>Liczba stron</td>
+            <td>Okładka</td>
+            <td>Język</td>
+        </thead>
+        {% for book in books %}
+            <tr>
+                <td>{{ book.title }}</td>
+                <td>{{ book.author }}</td>
+                <td>{{ book.pub_date }}</td>
+                <td>{{ book.isbn }}</td>
+                <td>{{ book.pages }}</td>
+                <td><a href="{{ book.cover }}" target="_blank">Link</a> </td>
+                <td>{{ book.lang }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+    {% include '_pagination.html' %}
+{% endblock %}

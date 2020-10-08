@@ -2,5 +2,15 @@
 /.idea/
 /books/__pycache__/
 /booksProject/__pycache__/
+/books/migrations/__pycache__/
+/books/tests/__pycache__/
+/books/api/__pycache__/
+/cover/
+htmlcov/
+.coverage
+.coverage.*
+coverage.xml
+*.cover
 
 *.sqlite3
+

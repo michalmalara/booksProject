@@ -1,0 +1,17 @@
+<div class="pagination">
+    <span class="pagination__nav">
+        {% if page_obj.has_previous %}
+            <a href="?{% param_replace page=1 %}">&laquo; pierwsza</a>
+            <a href="?{% param_replace page=page_obj.previous_page_number %}">poprzednia</a>
+        {% endif %}
+
+        <span class="current">
+            Strona {{ page_obj.number }} z {{ page_obj.paginator.num_pages }} (wszystkich wyników: {{ page_obj.paginator.count }}).
+        </span>
+
+        {% if page_obj.has_next %}
+            <a href="?{% param_replace page=page_obj.next_page_number %}">następna</a>
+            <a href="?{% param_replace page=paginator.num_pages %}">ostatnia &raquo;</a>
+        {% endif %}
+    </span>
+</div>
