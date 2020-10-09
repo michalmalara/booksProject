@@ -5,27 +5,39 @@ Lista książek
 {% endblock %}
 
 {% block body %}
-    <table border="1">
-        <thead>
-            <td>Tytuł</td>
-            <td>Autor</td>
-            <td>DAta publikacji</td>
-            <td>ISBN</td>
-            <td>Liczba stron</td>
-            <td>Okładka</td>
-            <td>Język</td>
-        </thead>
-        {% for book in books %}
-            <tr>
-                <td>{{ book.title }}</td>
-                <td>{{ book.author }}</td>
-                <td>{{ book.pub_date }}</td>
-                <td>{{ book.isbn }}</td>
-                <td>{{ book.pages }}</td>
-                <td><a href="{{ book.cover }}" target="_blank">Link</a> </td>
-                <td>{{ book.lang }}</td>
-            </tr>
-        {% endfor %}
-    </table>
-    {% include '_pagination.html' %}
+    <div>
+        <form method="GET">
+        {{ search_form.as_p }}
+        <input type="submit" value="Szukaj">
+        </form>
+    </div>
+    <br/>
+    <div>
+        <table border="1">
+            <thead>
+                <td>Tytuł</td>
+                <td>Autor</td>
+                <td>Data publikacji</td>
+                <td>ISBN</td>
+                <td>Liczba stron</td>
+                <td>Okładka</td>
+                <td>Język</td>
+            <td colspan="2">Edycja</td>
+            </thead>
+            {% for book in books %}
+                <tr>
+                    <td>{{ book.title }}</td>
+                    <td>{{ book.author }}</td>
+                    <td>{{ book.pub_date|date:'d.m.Y' }}</td>
+                    <td>{{ book.isbn }}</td>
+                    <td>{{ book.pages }}</td>
+                    <td><a href="{{ book.cover }}" target="_blank">Link</a> </td>
+                    <td>{{ book.lang }}</td>
+                    <td><a href="/edit_book/{{ book.pk }}"> Edytuj </a></td>
+                    <td><a href="/delete_book/{{ book.pk }}"> Usuń </a></td>
+                </tr>
+            {% endfor %}
+        </table>
+        {% include '_pagination.html' %}
+    </div>
 {% endblock %}

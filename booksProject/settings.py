@@ -144,6 +144,8 @@ LANGUAGE_CODE = 'pl'
 
 TIME_ZONE = 'Europe/Warsaw'
 
+DATE_INPUT_FORMATS = ('%d.%m.%Y')
+
 USE_I18N = True
 
 USE_L10N = True

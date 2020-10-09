@@ -1,16 +1,17 @@
 from datetime import datetime
 
+from django.core.exceptions import ValidationError
 from django.test import TestCase
 
 from books.models import Book
 
 
 class TestBooks(TestCase):
-    def setUp(self) -> None:
+    def setUp(self):
         self.book = Book()
         self.book.title = 'tytul 1'
         self.book.author = 'autor 1'
-        self.book.isbn = 123456789
+        self.book.isbn = 1234567891234
         self.book.pages = 45
         self.book.pub_date = datetime.now()
         self.book.cover = 'https://www.google.com/'
@@ -29,3 +30,8 @@ class TestBooks(TestCase):
         print((queryset[0]))
 
         self.assertEquals(queryset[0].__str__(), f'{self.book.title} - {self.book.author}')
+
+    def test_isbn_is_valid(self):
+        book = Book(isbn=123)
+        self.assertRaises(ValidationError, book.full_clean)
+
