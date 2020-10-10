@@ -1,3 +1,4 @@
+from django.contrib.auth import views as auth_views
 from django.test import SimpleTestCase
 from django.urls import resolve, reverse
 
@@ -24,3 +25,13 @@ class TestUrls(SimpleTestCase):
         url = reverse('book-delete', args=[0])
         self.assertEquals(resolve(url).func.__name__, BookDeleteView.as_view().__name__)
         self.assertTemplateUsed('book_delete_confirmation.html')
+
+    def test_login_url_is_ok(self):
+        url = reverse('login')
+        self.assertEquals(resolve(url).func.__name__, auth_views.LoginView.as_view().__name__)
+        self.assertTemplateUsed('registration/login.html')
+
+    def test_logout_url_is_ok(self):
+        url = reverse('logout')
+        self.assertEquals(resolve(url).func.__name__, auth_views.LogoutView.as_view().__name__)
+        self.assertTemplateUsed('registration/logout.html')

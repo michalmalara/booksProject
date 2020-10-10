@@ -1,12 +1,10 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
+from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from django.template.defaulttags import register
 
 from .models import Book
 from .forms import BooksSearchForm
 
-
-# Create your views here.
 
 @register.simple_tag(takes_context=True)
 def param_replace(context, **kwargs):
@@ -44,41 +42,65 @@ class BooksListView(ListView):
             if lang:
                 queryset = queryset.filter(lang=lang.upper())
 
-            sorting = search_form.cleaned_data['sorting']
-            if sorting:
-                sorting_direction = search_form.cleaned_data['sorting_direction']
-                if sorting_direction == 'DESC':
-                    sorting = '-' + sorting
-                queryset = queryset.order_by(sorting, '-pk')
+            # sorting = search_form.cleaned_data['sorting']
+            # if sorting:
+            #     sorting_direction = search_form.cleaned_data['sorting_direction']
+            #     if sorting_direction == 'DESC':
+            #         sorting = '-' + sorting
+            #     queryset = queryset.order_by(sorting, '-pk')
 
             published_starting_date = search_form.cleaned_data['published_starting_date']
             published_ending_date = search_form.cleaned_data['published_ending_date']
             if published_starting_date and published_ending_date:
-                queryset = queryset.filter(created__gte=published_ending_date,
-                                           created__lte=published_ending_date)
+                queryset = queryset.filter(pub_date__gte=published_ending_date,
+                                           pub_date__lte=published_ending_date)
             if published_starting_date and not published_ending_date:
-                queryset = queryset.filter(created__gte=published_starting_date)
+                queryset = queryset.filter(pub_date__gte=published_starting_date)
             if not published_starting_date and published_ending_date:
-                queryset = queryset.filter(created__lte=published_ending_date)
+                queryset = queryset.filter(pub_date__lte=published_ending_date)
+
+        sort_dir = {
+            'title': 'asc',
+            'author': 'asc',
+            'pub_date': 'asc',
+            'pages': 'asc',
+            'isbn': 'asc',
+            'lang': 'asc',
+        }
+
+        if 'sorting' in self.request.GET:
+            sorting = self.request.GET['sorting']
+
+            if 'sort_dir' in self.request.GET:
+                sort_dir_ = self.request.GET['sort_dir']
+                if sorting in sort_dir:
+                    if sort_dir_ == 'asc':
+                        sort_dir[sorting] = 'desc'
+                    else:
+                        sort_dir[sorting] = 'asc'
+                        sorting = '-' + sorting
+
+            queryset = queryset.order_by(sorting, '-pk')
 
         return super().get_context_data(
             search_form=search_form,
             object_list=queryset,
+            sort_dir=sort_dir,
             **kwargs)
 
 
-class BookCreateView(CreateView):
+class BookCreateView(LoginRequiredMixin, CreateView):
     model = Book
     fields = '__all__'
     success_url = '/'
 
 
-class BookEditView(UpdateView):
+class BookEditView(LoginRequiredMixin, UpdateView):
     model = Book
     fields = '__all__'
     success_url = '/'
 
 
-class BookDeleteView(DeleteView):
+class BookDeleteView(LoginRequiredMixin, DeleteView):
     model = Book
     success_url = '/'

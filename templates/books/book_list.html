@@ -5,39 +5,84 @@ Lista książek
 {% endblock %}
 
 {% block body %}
-    <div>
-        <form method="GET">
-        {{ search_form.as_p }}
-        <input type="submit" value="Szukaj">
-        </form>
-    </div>
-    <br/>
-    <div>
-        <table border="1">
-            <thead>
-                <td>Tytuł</td>
-                <td>Autor</td>
-                <td>Data publikacji</td>
-                <td>ISBN</td>
-                <td>Liczba stron</td>
-                <td>Okładka</td>
-                <td>Język</td>
-            <td colspan="2">Edycja</td>
-            </thead>
-            {% for book in books %}
-                <tr>
-                    <td>{{ book.title }}</td>
-                    <td>{{ book.author }}</td>
-                    <td>{{ book.pub_date|date:'d.m.Y' }}</td>
-                    <td>{{ book.isbn }}</td>
-                    <td>{{ book.pages }}</td>
-                    <td><a href="{{ book.cover }}" target="_blank">Link</a> </td>
-                    <td>{{ book.lang }}</td>
-                    <td><a href="/edit_book/{{ book.pk }}"> Edytuj </a></td>
-                    <td><a href="/delete_book/{{ book.pk }}"> Usuń </a></td>
-                </tr>
-            {% endfor %}
-        </table>
-        {% include '_pagination.html' %}
+    <div class="container">
+        <div class="container">
+            <form method="GET">
+                <div class="row">
+                    <div class="col-5">Wyszukiwanie</div>
+                </div><br/>
+                <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4">
+                   <div class="col">
+                       {{ search_form.title.label }}: {{ search_form.title }}
+                   </div>
+                   <div class="col">
+                       {{ search_form.isbn.label }}: {{ search_form.isbn }}
+                   </div>
+
+                   <div class="col">
+                        {{ search_form.author.label }}: {{ search_form.author }}
+                   </div>
+                   <div class="col">
+                       {{ search_form.lang.label }}: {{ search_form.lang }}
+                   </div>
+                    <div class="col">
+                       {{ search_form.published_starting_date.label }}: {{ search_form.published_starting_date }}
+                   </div>
+                    <div class="col">
+                       {{ search_form.published_starting_date.label }}: {{ search_form.published_starting_date }}
+                   </div>
+                </div>
+{#                <div class="row">#}
+{#                    <div class="col">#}
+{#                       {{ search_form.sorting.label }}: {{ search_form.sorting }} {{ search_form.sorting_direction }}#}
+{#                   </div>#}
+{#                </div>#}
+                <br/>
+            <input type="submit" value="Wyszukaj" class="btn-secondary">
+            </form>
+        </div>
+        <br/>
+        <div class="container">
+            {% if user.is_authenticated %}
+        <div>
+            <a href="/add_book"><button class="btn-primary">Dodaj książkę</button></a>
+        </div>
+        {% endif %}<br/>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <td scope="col"><b><a href="?{% param_replace sorting='title' sort_dir=sort_dir.title %}">Tytuł</a></b></td>
+                        <td scope="col"><b><a href="?{% param_replace sorting='author'  sort_dir=sort_dir.author %}">Autor</a></b></td>
+                        <td scope="col"><b><a href="?{% param_replace sorting='pub_date' sort_dir=sort_dir.pub_date %}">Data publikacji</a></b></td>
+                        <td scope="col"><b><a href="?{% param_replace sorting='isbn' sort_dir=sort_dir.isbn %}">ISBN</a></b></td>
+                        <td scope="col"><b><a href="?{% param_replace sorting='pages' sort_dir=sort_dir.pages %}">Liczba stron</a></b></td>
+                        <td scope="col"><b>Okładka</b></td>
+                        <td scope="col"><b><a href="?{% param_replace sorting='lang' sort_dir=sort_dir.lang %}">Język</a></b></td>
+                        {% if user.is_authenticated %}
+                        <td scope="col" colspan="2"><b>Edycja</b></td>
+                        {% endif %}
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for book in books %}
+                        <tr scope="row">
+                            <td>{{ book.title }}</td>
+                            <td>{{ book.author }}</td>
+                            <td>{{ book.pub_date|date:'d.m.Y' }}</td>
+                            <td>{{ book.isbn }}</td>
+                            <td>{{ book.pages }}</td>
+                            <td><a href="{{ book.cover }}" target="_blank">Link</a> </td>
+                            <td>{{ book.lang }}</td>
+                            {% if user.is_authenticated %}
+                            <td><a href="/edit_book/{{ book.pk }}"> Edytuj </a></td>
+                            <td><a href="/delete_book/{{ book.pk }}"> Usuń </a></td>
+                            {% endif %}
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table><br/>
+            {% include '_pagination.html' %}
+        </div>
+        <br/>
     </div>
 {% endblock %}

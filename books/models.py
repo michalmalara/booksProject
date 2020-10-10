@@ -1,9 +1,5 @@
-from django.core.exceptions import ValidationError
-from django.core.validators import MaxLengthValidator, MinLengthValidator, MinValueValidator, MaxValueValidator
+from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import models
-
-
-# Create your models here.
 
 
 class Book(models.Model):

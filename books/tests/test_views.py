@@ -1,5 +1,5 @@
 import random
-from datetime import datetime, date
+from datetime import date
 
 from django.contrib.auth.models import User
 from django.test import TestCase, RequestFactory, Client
@@ -54,16 +54,15 @@ class TestBooksListView(TestCase):
         self.client.login(username='testuser1', password='abcd')
 
         response = self.client.get(url)
-        for i in range(1,10):
+        for i in range(1, 10):
             self.assertContains(response, f'tytul {i}')
-        self.assertNotContains(response, f'tytul {i+2}')
+        self.assertNotContains(response, f'tytul {i + 2}')
 
         response = self.client.get(url + '?page=2')
         self.assertNotContains(response, f'tytul 10')
         for i in range(11, 21):
             self.assertContains(response, f'tytul {i}')
-        self.assertNotContains(response, f'tytul {i+1}')
-
+        self.assertNotContains(response, f'tytul {i + 1}')
 
     def test_books_list_view_searching(self):
         url = reverse('books-list')
@@ -81,8 +80,17 @@ class TestBooksListView(TestCase):
         response = self.client.get(url + f'?lang={self.books[5].lang}')
         self.assertContains(response, self.books[5].title)
 
-        response = self.client.get(url + '?sorting=title&sorting_direction=ASC')
+        response = self.client.get(url + f'?published_starting_date={self.books[5].pub_date.strftime("%d.%m%Y")}')
+        self.assertContains(response, self.books[5].title)
+
+        response = self.client.get(url + f'?published_ending_date={self.books[4].pub_date.strftime("%d.%m%Y")}')
+        self.assertContains(response, self.books[4].title)
+
+    def test_books_list_view_sorting(self):
+        url = reverse('books-list')
+
+        response = self.client.get(url + '?sorting=title&sort_dir=asc')
         self.assertContains(response, self.books[0].title)
 
-        response = self.client.get(url + '?sorting=title&sorting_direction=DESC')
+        response = self.client.get(url + '?sorting=title&sort_dir=desc')
         self.assertContains(response, self.books[-1].title)
