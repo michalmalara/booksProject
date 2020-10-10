@@ -13,3 +13,18 @@ class BooksSearchForm(forms.Form):
         super().__init__(*args, **kwargs)
         for i in self.fields:
             self.fields[i].required = False
+
+
+class ImportBooksForm(forms.Form):
+    intitle = forms.CharField(max_length=50, label='Tytuł')
+    inauthor = forms.CharField(max_length=50, label='Autor')
+    inpublisher = forms.CharField(max_length=50, label='Wydawca')
+    subject = forms.CharField(max_length=50, label='Temat')
+    isbn = forms.IntegerField(label='ISBN')
+    lccn = forms.IntegerField(label='LCCN')
+    oclc = forms.IntegerField(label='OCLC')
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for i in self.fields:
+            self.fields[i].required = False

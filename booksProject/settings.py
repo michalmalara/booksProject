@@ -40,7 +40,6 @@ INSTALLED_APPS = [
     'books.apps.BooksConfig',
 
     'rest_framework',
-    'drf_yasg',
     'rest_framework.authtoken',
 
     'django_filters',
@@ -70,11 +69,6 @@ REST_FRAMEWORK = {
         'rest_framework.filters.SearchFilter',
         'rest_framework.filters.OrderingFilter',
     ),
-}
-
-SWAGGER_SETTINGS = {
-    'LOGIN_URL': '/login',
-    'LOGOUT_URL': '/logout'
 }
 
 
