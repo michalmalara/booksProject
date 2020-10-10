@@ -6,9 +6,15 @@ Dodaj książkę
 
 {% block body %}
     <div class="container">
-        <form method="POST">{% csrf_token %}
-            {{ form.as_p }}
-        <input type="submit" value="Dodaj">
-        </form>
+        <div class="card">
+            <form method="POST">{% csrf_token %}
+                <div class="card-body ">
+                    {{ form.as_p }}
+                </div>
+            <div class="card-footer">
+                <input type="submit" value="Dodaj" class="btn-primary">
+            </div>
+            </form>
+        </div>
     </div>
 {% endblock %}

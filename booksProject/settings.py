@@ -43,6 +43,8 @@ INSTALLED_APPS = [
     'drf_yasg',
     'rest_framework.authtoken',
 
+    'django_filters',
+
     'django_nose',
 ]
 
@@ -74,6 +76,7 @@ SWAGGER_SETTINGS = {
     'LOGIN_URL': '/login',
     'LOGOUT_URL': '/logout'
 }
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
