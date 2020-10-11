@@ -10,7 +10,7 @@ Lista książek
             <form method="GET">
                 <div class="row">
                     <div class="col-5">Wyszukiwanie</div>
-                </div><br/>
+                </div>
                 <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4">
                    <div class="col">
                        {{ search_form.title.label }}: {{ search_form.title }}
@@ -72,7 +72,10 @@ Lista książek
                             <td>{{ book.pub_date|date:'d.m.Y' }}</td>
                             <td>{{ book.isbn }}</td>
                             <td>{{ book.pages }}</td>
-                            <td><a href="{{ book.cover }}" target="_blank">Link</a> </td>
+                            <td>
+                                {% if book.cover %}
+                                <a href="{{ book.cover }}" target="_blank">Link</a> </td>
+                                {% endif %}
                             <td>{{ book.lang }}</td>
                             {% if user.is_authenticated %}
                             <td><a href="/edit_book/{{ book.pk }}"> Edytuj </a></td>

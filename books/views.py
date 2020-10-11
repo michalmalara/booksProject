@@ -139,17 +139,29 @@ def import_book(request):
                 pub_date_ = response_data['items'][0]['volumeInfo']['publishedDate']
             book.pub_date = pub_date_
 
+            # for number in response_data['items'][0]['volumeInfo']['industryIdentifiers']:
+            #     if 'ISBN_13' in number['type']:
+            #         book.isbn = number['identifier']
             book.isbn = response_data['items'][0]['volumeInfo']['industryIdentifiers'][0]['identifier']
+
             book.pages = response_data['items'][0]['volumeInfo']['pageCount']
+
             if 'imageLinks' in response_data['items'][0]['volumeInfo']:
-                if 'thumbnail' in
                 book.cover = response_data['items'][0]['volumeInfo']['imageLinks']['thumbnail']
+
             book.lang = response_data['items'][0]['volumeInfo']['language']
 
             book.save()
 
             return redirect(reverse('books-list'))
-        else:
-            return HttpResponse(response.status_code)
 
-    return render(request, 'books/import_books.html', {'form': form})
+        elif response.status_code == 400:
+            return render(request, 'books/import_books.html',
+                          {'form': form, 'info': 'Nie znaleziono tej książki.'})
+        else:
+            return render(request, 'books/import_books.html',
+                          {'form': form, 'info': f'Błąd zewnętrznego serwera! (Kod: {response.status_code})'})
+
+
+    return render(request, 'books/import_books.html',
+                  {'form': form})

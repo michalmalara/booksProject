@@ -3,7 +3,7 @@ from django import forms
 class BooksSearchForm(forms.Form):
     title = forms.CharField(max_length=50, label='Tytuł')
     author = forms.CharField(max_length=50, label='Autor')
-    isbn = forms.IntegerField(label='Numer ISBN')
+    isbn = forms.CharField(max_length=13, label='Numer ISBN')
     lang = forms.CharField(max_length=10, label='Język')
 
     published_starting_date = forms.DateField(label='Opublikowano po dniu')

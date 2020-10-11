@@ -1,11 +1,15 @@
 {% extends 'base.html' %}
+{% block title %}
+    Zaloguj się
+{% endblock %}
+
 {% block body %}
 
 <form method="POST" action="">
     {% csrf_token %}
     <center>
         {{ form.as_p }}
-        <input type="submit" class="btn" value="Zaloguj">
+        <input type="submit" class="btn-primary" value="Zaloguj">
     </center>
 </form>
 

@@ -6,7 +6,13 @@ Dodaj książkę
 
 {% block body %}
     <div class="container">
+        {% if 'info' %}
+            <div class="alert alert-danger">
+                {{ info }}
+            </div>
+        {% endif %}
         <div class="card">
+
             <form method="POST">
                 {% csrf_token %}
                 <div class="card-body ">
