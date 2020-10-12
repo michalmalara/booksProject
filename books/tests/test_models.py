@@ -17,6 +17,10 @@ class TestBooks(TestCase):
         self.book.cover = 'https://www.google.com/'
         self.book.save()
 
+    def test_book_model_str(self):
+        queryset = Book.objects.all()
+        self.assertEqual(queryset[0].__str__(), f'{self.book.title} - {self.book.author}')
+
     def test_book_created(self):
         queryset = Book.objects.all()
 

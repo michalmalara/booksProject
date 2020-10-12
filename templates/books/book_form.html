@@ -4,8 +4,14 @@
 Dodaj książkę
 {% endblock %}
 
+{% block special_nav %}
+    <a href="/" class="nav-link">Powrót</a>
+{% endblock %}
+
 {% block body %}
     <div class="container">
+        <h1>Dodaj książkę</h1>
+
         <div class="card">
             <form method="POST">{% csrf_token %}
                 <div class="card-body ">

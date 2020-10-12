@@ -20,14 +20,17 @@
             <li class="nav-item">
                 <a href="/logout" class="nav-link">Wyloguj</a>
             </li>
-            </ul>
+
         {% else %}
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item">
                     <a href="/login" class="nav-link">Zaloguj</a>
                 </li>
-            </ul>
+
         {% endif %}
+        {% block special_nav %}
+        {% endblock %}
+        </ul>
     </nav>
 <br/>
     {% block body %}

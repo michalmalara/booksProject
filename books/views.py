@@ -117,51 +117,57 @@ def import_book(request):
             'subject': request.POST['subject'],
             'isbn': request.POST['isbn'],
             'lccn': request.POST['lccn'],
-            'oclc': request.POST['oclc']
+            'oclc': request.POST['oclc'],
+            'maxResults': request.POST['positions_count']
         }
 
         response = requests.get(api_url, api_data)
         if response.status_code == 200:
             response_data = response.json()
+            info = []
+            errors = 0
+            for i, b in enumerate(response_data['items']):
+                book = Book()
 
-            print(response.url)
+                try:
+                    book.title = b['volumeInfo']['title']
+                    book.author = ', '.join(b['volumeInfo']['authors'])
 
-            book = Book()
+                    if len(b['volumeInfo']['publishedDate']) == 4:
+                        pub_date_ = b['volumeInfo']['publishedDate'] + '-01-01'
+                    elif len(b['volumeInfo']['publishedDate']) == 7:
+                        pub_date_ = b['volumeInfo']['publishedDate'] + '-01'
+                    else:
+                        pub_date_ = b['volumeInfo']['publishedDate']
+                    book.pub_date = pub_date_
 
-            book.title = response_data['items'][0]['volumeInfo']['title']
-            book.author = ', '.join(response_data['items'][0]['volumeInfo']['authors'])
+                    book.isbn = b['volumeInfo']['industryIdentifiers'][0]['identifier']
 
-            if len(response_data['items'][0]['volumeInfo']['publishedDate']) == 4:
-                pub_date_ = response_data['items'][0]['volumeInfo']['publishedDate'] + '-01-01'
-            elif len(response_data['items'][0]['volumeInfo']['publishedDate']) == 7:
-                pub_date_ = response_data['items'][0]['volumeInfo']['publishedDate'] + '-01'
-            else:
-                pub_date_ = response_data['items'][0]['volumeInfo']['publishedDate']
-            book.pub_date = pub_date_
+                    book.pages = b['volumeInfo']['pageCount']
 
-            # for number in response_data['items'][0]['volumeInfo']['industryIdentifiers']:
-            #     if 'ISBN_13' in number['type']:
-            #         book.isbn = number['identifier']
-            book.isbn = response_data['items'][0]['volumeInfo']['industryIdentifiers'][0]['identifier']
+                    if 'imageLinks' in b['volumeInfo']:
+                        book.cover = b['volumeInfo']['imageLinks']['thumbnail']
 
-            book.pages = response_data['items'][0]['volumeInfo']['pageCount']
+                    book.lang = b['volumeInfo']['language']
 
-            if 'imageLinks' in response_data['items'][0]['volumeInfo']:
-                book.cover = response_data['items'][0]['volumeInfo']['imageLinks']['thumbnail']
+                    book.save()
+                except KeyError as e:
+                    info.append(f'Błąd przy dodawaniu książki "{b["volumeInfo"]["title"]}". Brak pola {e}')
+                    errors += 1
 
-            book.lang = response_data['items'][0]['volumeInfo']['language']
+                except Exception as e:
+                    info.append(f'Błąd przy dodawaniu książki {b["volumeInfo"]["title"]}')
+                    errors += 1
 
-            book.save()
-
-            return redirect(reverse('books-list'))
+            return render(request, 'books/import_books.html',
+                          {'form': form, 'info': info, 'succes_info': f'Dodano książek: {i + 1 - errors} z {request.POST["positions_count"]}.'})
 
         elif response.status_code == 400:
             return render(request, 'books/import_books.html',
-                          {'form': form, 'info': 'Nie znaleziono tej książki.'})
+                          {'form': form, 'info': ['Nie znaleziono tej książki.']})
         else:
             return render(request, 'books/import_books.html',
-                          {'form': form, 'info': f'Błąd zewnętrznego serwera! (Kod: {response.status_code})'})
-
+                          {'form': form, 'info': [f'Błąd zewnętrznego serwera! (Kod: {response.status_code})']})
 
     return render(request, 'books/import_books.html',
-                  {'form': form})
+                  {'form': form, 'info': []})

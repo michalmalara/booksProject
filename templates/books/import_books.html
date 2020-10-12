@@ -4,11 +4,26 @@
 Dodaj książkę
 {% endblock %}
 
+{% block special_nav %}
+    <a href="/" class="nav-link">Powrót</a>
+{% endblock %}
+
+
 {% block body %}
     <div class="container">
-        {% if 'info' %}
+            <h1>Importuj książkę</h1>
+
+        {% if succes_info|length > 0 %}
+            <div class="alert alert-success">
+            {{ succes_info }}
+            </div>
+        {% endif %}
+
+        {% if info|length > 0 %}
             <div class="alert alert-danger">
-                {{ info }}
+            {% for i in info %}
+                {{ i }}<br/>
+            {% endfor %}
             </div>
         {% endif %}
         <div class="card">

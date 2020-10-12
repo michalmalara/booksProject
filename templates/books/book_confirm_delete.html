@@ -4,8 +4,11 @@
 Usuń książkę
 {% endblock %}
 
+{% block special_nav %}
+    <a href="/" class="nav-link">Powrót</a>
+{% endblock %}
+
 {% block body %}
-    <a href="/">Powrót</a><br/><br/>
     <h1>Czy usunąć książkę "{{ object.title }}"?</h1>
 
     <form method="POST"> {% csrf_token %}

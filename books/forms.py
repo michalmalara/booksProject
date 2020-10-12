@@ -1,5 +1,6 @@
 from django import forms
 
+
 class BooksSearchForm(forms.Form):
     title = forms.CharField(max_length=50, label='Tytuł')
     author = forms.CharField(max_length=50, label='Autor')
@@ -23,6 +24,7 @@ class ImportBooksForm(forms.Form):
     isbn = forms.IntegerField(label='ISBN')
     lccn = forms.IntegerField(label='LCCN')
     oclc = forms.IntegerField(label='OCLC')
+    positions_count = forms.IntegerField(min_value=1, max_value=40, label='Liczba pozycji do dodania', initial=1)
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
