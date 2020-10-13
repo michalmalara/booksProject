@@ -1,5 +1,7 @@
+import json as js
 import random
 from datetime import date
+from unittest.mock import patch
 
 from django.contrib.auth.models import User
 from django.test import TestCase, RequestFactory, Client
@@ -94,3 +96,95 @@ class TestBooksListView(TestCase):
 
         response = self.client.get(url + '?sorting=title&sort_dir=desc')
         self.assertContains(response, self.books[-1].title)
+
+
+class MockResponse:
+    def __init__(self, status_code=200, json_response_mock='example_response.json'):
+        self.status_code = status_code
+        self.json_response_mock = 'books/tests/' + json_response_mock
+
+    def json(self):
+        with open(self.json_response_mock, 'r') as example:
+            response = js.load(example)
+        return response
+
+
+
+class BooksImportTest(TestCase):
+    def test_import_books_view(self):
+        url = reverse('import-books')
+        response = self.client.get(url)
+        self.assertEquals(response.status_code, 200)
+
+    @patch('books.views.requests.get', return_value=MockResponse())
+    def test_api_request_ok(self, *args):
+        url = reverse('import-books')
+
+        response = self.client.post(url,
+                                    {
+                                        'intitle': 'Hobbit',
+                                        'inauthor': '',
+                                        'inpublisher': '',
+                                        'subject': '',
+                                        'isbn': '',
+                                        'lccn': '',
+                                        'oclc': '',
+                                        'positions_count': '1'
+                                    }
+                                    )
+        self.assertContains(response, 'Dodano książek: 1 z 1.')
+
+    @patch('books.views.requests.get', return_value=MockResponse(400))
+    def test_api_request_not_found(self, *args):
+        url = reverse('import-books')
+
+        response = self.client.post(url,
+                                    {
+                                        'intitle': '',
+                                        'inauthor': '',
+                                        'inpublisher': '',
+                                        'subject': '',
+                                        'isbn': '',
+                                        'lccn': '',
+                                        'oclc': '',
+                                        'positions_count': '1'
+                                    }
+                                    )
+        self.assertContains(response, 'Nie znaleziono tej książki.')
+
+    @patch('books.views.requests.get', return_value=MockResponse(500))
+    def test_api_request_server_error(self, *args):
+        url = reverse('import-books')
+
+        response = self.client.post(url,
+                                    {
+                                        'intitle': 'Hobbit',
+                                        'inauthor': '',
+                                        'inpublisher': '',
+                                        'subject': '',
+                                        'isbn': '',
+                                        'lccn': '',
+                                        'oclc': '',
+                                        'positions_count': '1'
+                                    }
+                                    )
+
+        self.assertContains(response, 'Błąd zewnętrznego serwera! (Kod: 500)')
+
+    @patch('books.views.requests.get', return_value=MockResponse(200, 'example_response_no_pages.json'))
+    def test_api_request_server_error(self, *args):
+        url = reverse('import-books')
+
+        response = self.client.post(url,
+                                    {
+                                        'intitle': 'Hobbit',
+                                        'inauthor': '',
+                                        'inpublisher': '',
+                                        'subject': '',
+                                        'isbn': '',
+                                        'lccn': '',
+                                        'oclc': '',
+                                        'positions_count': '1'
+                                    }
+                                    )
+        self.assertContains(response,  'Brak pola &#x27;pageCount&#x27;')

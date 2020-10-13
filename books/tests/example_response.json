@@ -1,0 +1,67 @@
+{
+            "kind": "books#volumes",
+            "totalItems": 473,
+            "items": [
+                {
+                    "kind": "books#volume",
+                    "id": "DqLPAAAAMAAJ",
+                    "etag": "wHYapAMEz4o",
+                    "selfLink": "https://www.googleapis.com/books/v1/volumes/DqLPAAAAMAAJ",
+                    "volumeInfo": {
+                        "title": "Hobbit czyli Tam i z powrotem",
+                        "authors": [
+                            "John Ronald Reuel Tolkien"
+                        ],
+                        "publishedDate": "1985",
+                        "industryIdentifiers": [
+                            {
+                                "type": "OTHER",
+                                "identifier": "IND:39000004593617"
+                            }
+                        ],
+                        "readingModes": {
+                            "text": false,
+                            "image": false
+                        },
+                        "pageCount": 233,
+                        "printType": "BOOK",
+                        "maturityRating": "NOT_MATURE",
+                        "allowAnonLogging": false,
+                        "contentVersion": "1.1.2.0.preview.0",
+                        "panelizationSummary": {
+                            "containsEpubBubbles": false,
+                            "containsImageBubbles": false
+                        },
+                        "imageLinks": {
+                            "smallThumbnail": "http://books.google.com/books/content?id=DqLPAAAAMAAJ&printsec=frontcover&img=1&zoom=5&source=gbs_api",
+                            "thumbnail": "http://books.google.com/books/content?id=DqLPAAAAMAAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api"
+                        },
+                        "language": "pl",
+                        "previewLink": "http://books.google.pl/books?id=DqLPAAAAMAAJ&q=Hobbit&dq=Hobbit&hl=&cd=1&source=gbs_api",
+                        "infoLink": "http://books.google.pl/books?id=DqLPAAAAMAAJ&dq=Hobbit&hl=&source=gbs_api",
+                        "canonicalVolumeLink": "https://books.google.com/books/about/Hobbit_czyli_Tam_i_z_powrotem.html?hl=&id=DqLPAAAAMAAJ"
+                    },
+                    "saleInfo": {
+                        "country": "PL",
+                        "saleability": "NOT_FOR_SALE",
+                        "isEbook": false
+                    },
+                    "accessInfo": {
+                        "country": "PL",
+                        "viewability": "NO_PAGES",
+                        "embeddable": false,
+                        "publicDomain": false,
+                        "textToSpeechPermission": "ALLOWED",
+                        "epub": {
+                            "isAvailable": false
+                        },
+                        "pdf": {
+                            "isAvailable": false
+                        },
+                        "webReaderLink": "http://play.google.com/books/reader?id=DqLPAAAAMAAJ&hl=&printsec=frontcover&source=gbs_api",
+                        "accessViewStatus": "NONE",
+                        "quoteSharingAllowed": false
+                    }
+                }
+            ]
+        }

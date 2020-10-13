@@ -160,7 +160,7 @@ def import_book(request):
                     errors += 1
 
             return render(request, 'books/import_books.html',
-                          {'form': form, 'info': info, 'succes_info': f'Dodano książek: {i + 1 - errors} z {request.POST["positions_count"]}.'})
+                          {'form': form, 'info': info, 'succes_info': f'Dodano książek: {i + 1 - errors} z {i+1}.'})
 
         elif response.status_code == 400:
             return render(request, 'books/import_books.html',
