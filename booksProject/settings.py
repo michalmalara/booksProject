@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 import os
 from pathlib import Path
+import django_heroku
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -20,12 +21,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 's9pv5^hyi#eos$3mo@ecf9rvy@x!t7c9=w9e93so#ju$83h*oa'
+SECRET_KEY = bool(os.environ.get("SECRET_KEY", False))
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['mmbooks.herokuapp.com', '127.0.0.1']
 
 
 # Application definition
@@ -109,8 +110,12 @@ WSGI_APPLICATION = 'booksProject.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'd73i0khitpo3pi',
+        'USER': 'faonaiplyuwweq',
+        'PASSWORD': 'df6aae328551009afd792da9907112cd0538b75bf4bb3c6a0c0ce0b3b5a0d171',
+        'HOST': 'ec2-34-254-24-116.eu-west-1.compute.amazonaws.com',
+        'PORT': '5432',
     }
 }
 
@@ -156,3 +161,5 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+
+django_heroku.settings(locals())
