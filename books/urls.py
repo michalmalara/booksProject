@@ -12,4 +12,4 @@ urlpatterns = [
     path('delete_book/<int:pk>', views.BookDeleteView.as_view(), name='book-delete'),
 ]
 
-urlpatterns+= static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
